@@ -1,0 +1,33 @@
+name: Extract ZIP File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Unzip ff_aimbot.zip
+        run: |
+          if [ -f "ff_aimbot.zip" ]; then
+            unzip -o ff_aimbot.zip -d ff_aimbot/
+            rm ff_aimbot.zip
+          else
+            echo "ff_aimbot.zip not found in the root directory!"
+            exit 1
+          fi
+
+      - name: Commit and Push Extracted Files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@://github.com"
+          git add .
+          git commit -m "Extracted ff_aimbot.zip contents" || echo "No changes to commit"
+          git push
+          
