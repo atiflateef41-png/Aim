@@ -1,0 +1,47 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Extract Project Files
+        run: |
+          if [ -f "ff_aimbot.zip" ]; then
+            unzip -o ff_aimbot.zip -d extracted_project
+            if [ -d "extracted_project/ff_aimbot" ]; then
+              mv extracted_project/ff_aimbot/* .
+            else
+              mv extracted_project/* .
+            fi
+            rm -rf extracted_project ff_aimbot.zip
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Build Debug APK
+        run: |
+          if [ -f "gradlew" ]; then
+            chmod +x gradlew
+            ./gradlew assembleDebug
+          else
+            gradle assembleDebug
+          fi
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ff_aimbot-Debug-APK
+          path: app/build/outputs/apk/debug/*.apk
