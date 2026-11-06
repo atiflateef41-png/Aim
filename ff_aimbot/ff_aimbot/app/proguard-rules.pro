@@ -1,0 +1,2 @@
+-keep class com.ff.overlay.** { *; }
+-renamesourcefileattribute SourceFile
