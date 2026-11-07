@@ -13,13 +13,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Unzip ff_aimbot.zip
+      - name: Unzip Aim_NoRoot.zip
         run: |
-          if [ -f "ff_aimbot.zip" ]; then
-            unzip -o ff_aimbot.zip -d ff_aimbot/
-            rm ff_aimbot.zip
+          if [ -f "Aim_NoRoot.zip" ]; then
+            unzip -o Aim_NoRoot.zip -d Aim_NoRoot/
+            rm Aim_NoRoot.zip
           else
-            echo "ff_aimbot.zip not found in the root directory!"
+            echo "Aim_NoRoot.zip not found in the root directory!"
             exit 1
           fi
 
@@ -28,6 +28,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@://github.com"
           git add .
-          git commit -m "Extracted ff_aimbot.zip contents" || echo "No changes to commit"
+          git commit -m "Extracted Aim_NoRoot.zip contents" || echo "No changes to commit"
           git push
           
